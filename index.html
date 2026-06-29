@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Еженедельная аналитика · @andreyandreev.me</title>
+<meta name="robots" content="noindex">
+<style>
+@font-face{font-family:'Manrope';src:url('fonts/Manrope-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:'Manrope';src:url('fonts/Manrope-Medium.ttf') format('truetype');font-weight:500;font-display:swap}
+@font-face{font-family:'Manrope';src:url('fonts/Manrope-SemiBold.ttf') format('truetype');font-weight:600;font-display:swap}
+@font-face{font-family:'Manrope';src:url('fonts/Manrope-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
+@font-face{font-family:'Manrope';src:url('fonts/Manrope-ExtraBold.ttf') format('truetype');font-weight:800;font-display:swap}
+@font-face{font-family:'Instrument Serif';src:url('fonts/InstrumentSerif-Italic.ttf') format('truetype');font-weight:400;font-style:italic;font-display:swap}
+:root{
+  --ink:#0E0E0E;--ink-3:#555;--ink-mute:#8A8A8A;
+  --line:#E6E3DD;--line-2:#D6D2C9;
+  --paper:#F4F0E8;--paper-2:#ECE6DA;--white:#FFFFFF;
+  --coral:#E86F4D;--coral-soft:#F4A48A;--coral-tint:#F7D9CC;
+  --green:#3E8E5A;--red:#CB4B3A;--sky:#A9C2DD;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--paper);font-family:'Manrope',-apple-system,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto;padding:34px 22px 80px}
+/* header */
+header{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:18px;padding-bottom:24px;border-bottom:1px solid var(--line-2)}
+.h-l .eyebrow{font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--coral)}
+.h-l h1{font-size:32px;font-weight:800;letter-spacing:-.8px;margin-top:6px;line-height:1.05}
+.h-l .sub{font-size:14px;font-weight:500;color:var(--ink-mute);margin-top:7px}
+.h-r{text-align:right}
+.h-r .num{font-size:42px;font-weight:800;letter-spacing:-1.4px;line-height:.9}
+.h-r .lbl{font-size:13px;font-weight:600;color:var(--ink-mute);margin-top:5px}
+.updated{font-size:12px;font-weight:500;color:var(--ink-mute);margin-top:8px}
+.updated b{color:var(--green);font-weight:700}
+/* kpi */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px}
+.kpi{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px}
+.kpi .k-lbl{font-size:12.5px;font-weight:600;color:var(--ink-mute)}
+.kpi .k-num{font-size:28px;font-weight:800;letter-spacing:-.8px;margin-top:8px;line-height:1}
+.kpi .k-foot{font-size:12px;font-weight:600;color:var(--ink-3);margin-top:6px}
+.kpi.accent{background:var(--coral);color:#fff}
+.kpi.accent .k-lbl,.kpi.accent .k-foot{color:rgba(255,255,255,.85)}
+/* sections */
+section{margin-top:30px;background:var(--white);border:1px solid var(--line);border-radius:18px;padding:24px 24px 20px}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.sec-title{font-size:17px;font-weight:800;letter-spacing:-.2px}
+.sec-note{font-size:12.5px;font-weight:500;color:var(--ink-mute)}
+.legend{display:flex;gap:16px;flex-wrap:wrap}
+.lg{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--ink-3)}
+.lg .dot{width:12px;height:12px;border-radius:3px;flex:none}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.chart-scroll{width:100%}
+/* table */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:13px}
+th,td{padding:9px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
+th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--ink-mute);position:sticky;top:0;background:var(--white)}
+td:first-child,th:first-child{text-align:left;font-weight:700;color:var(--ink)}
+tbody tr:hover{background:var(--paper)}
+.up{color:var(--green);font-weight:700}.down{color:var(--red);font-weight:700}
+.muted{color:var(--ink-mute)}
+/* footer */
+footer{margin-top:34px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12.5px;font-weight:600;color:var(--ink-mute)}
+.handle{font-family:'Instrument Serif',serif;font-style:italic;font-size:19px;color:var(--coral)}
+@media(max-width:760px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .h-l h1{font-size:25px}.h-r .num{font-size:34px}
+  .wrap{padding:24px 15px 60px}
+  section{padding:18px 15px 16px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="h-l">
+      <div class="eyebrow">Еженедельная аналитика · Instagram</div>
+      <h1 id="title">Аналитика контента</h1>
+      <div class="sub" id="sub">—</div>
+    </div>
+    <div class="h-r">
+      <div class="num" id="foll">—</div>
+      <div class="lbl">подписчиков сейчас</div>
+      <div class="updated" id="updated">—</div>
+    </div>
+  </header>
+
+  <div class="kpis" id="kpis"></div>
+
+  <section>
+    <div class="sec-head">
+      <div class="sec-title">Рост подписчиков</div>
+      <div class="sec-note" id="growth-note">—</div>
+    </div>
+    <div class="chart-scroll"><svg id="chart-foll" viewBox="0 0 1000 320" preserveAspectRatio="xMidYMid meet"></svg></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div class="sec-title">Охват по неделям</div>
+      <div class="legend">
+        <div class="lg"><span class="dot" style="background:var(--coral)"></span>Подписчики</div>
+        <div class="lg"><span class="dot" style="background:var(--coral-soft)"></span>Неподписчики</div>
+      </div>
+    </div>
+    <div class="chart-scroll"><svg id="chart-reach" viewBox="0 0 1000 340" preserveAspectRatio="xMidYMid meet"></svg></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div class="sec-title">Вовлечённость</div>
+      <div class="legend">
+        <div class="lg"><span class="dot" style="background:var(--coral)"></span>Лайки</div>
+        <div class="lg"><span class="dot" style="background:var(--sky)"></span>Сохранения</div>
+        <div class="lg"><span class="dot" style="background:#C9A24A"></span>Комментарии</div>
+      </div>
+    </div>
+    <div class="chart-scroll"><svg id="chart-eng" viewBox="0 0 1000 300" preserveAspectRatio="xMidYMid meet"></svg></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="sec-title">Все недели</div><div class="sec-note">прокрутка вбок →</div></div>
+    <div class="tbl-wrap"><table id="tbl"></table></div>
+  </section>
+
+  <footer>
+    <div>Данные: Instagram Graph API + Notion · обновляется еженедельно</div>
+    <div class="handle">Andrey Andreev</div>
+  </footer>
+</div>
+
+<script>
+const fmt=n=>(n==null?'—':Math.round(n).toLocaleString('ru-RU').replace(/\s/g,' '));
+const fmtK=n=>{if(n==null)return '—';if(n>=1e6)return (n/1e6).toFixed(n>=1e7?0:1).replace('.',',')+'M';if(n>=1e3)return Math.round(n/1e3)+'K';return n;};
+const SVGNS='http://www.w3.org/2000/svg';
+function el(t,a){const e=document.createElementNS(SVGNS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+
+fetch('data.json?v='+Date.now()).then(r=>r.json()).then(D=>{
+  const W=D.weeks, M=D.meta;
+  document.getElementById('title').textContent='Аналитика контента';
+  document.getElementById('sub').textContent=M.handle+' · '+M.period+' · '+W.length+' недель';
+  document.getElementById('foll').textContent=fmt(M.followers_now);
+  // updated + week delta
+  const lastG=[...W].reverse().find(w=>w.growth!=null);
+  document.getElementById('updated').innerHTML='обновлено '+M.updated+(lastG?' · <b>+'+fmt(lastG.growth)+' за неделю</b>':'');
+
+  // KPIs
+  const withF=W.filter(w=>w.followers!=null);
+  const ytd=withF.length?withF[withF.length-1].followers-withF[0].followers:null;
+  const bestReach=W.reduce((a,w)=>(w.reach||0)>(a.reach||0)?w:a,W[0]);
+  const avgReach=Math.round(W.reduce((s,w)=>s+(w.reach||0),0)/W.length);
+  const sumGrowth=W.reduce((s,w)=>s+(w.growth||0),0);
+  const kpis=[
+    {l:'Подписчиков сейчас',n:fmt(M.followers_now),f:'старт года ≈ '+fmt(withF[0]?.followers),accent:true},
+    {l:'Прирост за период',n:'+'+fmt((M.followers_now)-(withF[0]?.followers||0)),f:'с начала года'},
+    {l:'Лучшая неделя · охват',n:fmtK(bestReach.reach),f:bestReach.label},
+    {l:'Средний охват / нед',n:fmtK(avgReach),f:'за '+W.length+' недель'},
+  ];
+  document.getElementById('kpis').innerHTML=kpis.map(k=>
+    `<div class="kpi ${k.accent?'accent':''}"><div class="k-lbl">${k.l}</div><div class="k-num">${k.n}</div><div class="k-foot">${k.f}</div></div>`).join('');
+
+  // ---- Chart: followers line ----
+  (function(){
+    const svg=document.getElementById('chart-foll');
+    const w=1000,h=320,pl=64,pr=16,pt=20,pb=46;
+    const pts=W.map((d,i)=>({i,v:d.followers,label:d.label}));
+    const valid=pts.filter(p=>p.v!=null);
+    const mn=Math.min(...valid.map(p=>p.v)), mx=Math.max(...valid.map(p=>p.v));
+    const x=i=>pl+(i/(W.length-1))*(w-pl-pr);
+    const y=v=>pt+(1-(v-mn)/(mx-mn))*(h-pt-pb);
+    // gridlines
+    for(let g=0;g<=4;g++){const val=mn+(mx-mn)*g/4;const yy=y(val);
+      svg.appendChild(el('line',{x1:pl,y1:yy,x2:w-pr,y2:yy,stroke:'#E6E3DD','stroke-width':1}));
+      const t=el('text',{x:pl-10,y:yy+4,'text-anchor':'end','font-size':12,fill:'#8A8A8A','font-weight':600});t.textContent=fmtK(val);svg.appendChild(t);}
+    // area + line across valid points (handles gaps by connecting valid ones in order)
+    let dPath='',aPath='';
+    valid.forEach((p,k)=>{const X=x(p.i),Y=y(p.v);dPath+=(k?'L':'M')+X+' '+Y+' ';});
+    const x0=x(valid[0].i),xn=x(valid[valid.length-1].i);
+    aPath='M'+x0+' '+(h-pb)+' '+valid.map(p=>'L'+x(p.i)+' '+y(p.v)).join(' ')+' L'+xn+' '+(h-pb)+' Z';
+    const grad=el('linearGradient',{id:'gF',x1:0,y1:0,x2:0,y2:1});
+    grad.appendChild(el('stop',{offset:0,'stop-color':'#E86F4D','stop-opacity':.22}));
+    grad.appendChild(el('stop',{offset:1,'stop-color':'#E86F4D','stop-opacity':0}));
+    svg.appendChild(grad);
+    svg.appendChild(el('path',{d:aPath,fill:'url(#gF)'}));
+    svg.appendChild(el('path',{d:dPath,fill:'none',stroke:'#E86F4D','stroke-width':2.6,'stroke-linejoin':'round','stroke-linecap':'round'}));
+    valid.forEach(p=>svg.appendChild(el('circle',{cx:x(p.i),cy:y(p.v),r:3,fill:'#fff',stroke:'#E86F4D','stroke-width':2})));
+    // x labels (every Nth)
+    const step=Math.ceil(W.length/8);
+    W.forEach((d,i)=>{if(i%step&&i!==W.length-1)return;const t=el('text',{x:x(i),y:h-pb+22,'text-anchor':'middle','font-size':11,fill:'#8A8A8A','font-weight':600});t.textContent=d.label.split('—')[0].trim();svg.appendChild(t);});
+    document.getElementById('growth-note').textContent='от '+fmt(valid[0].v)+' до '+fmt(valid[valid.length-1].v);
+  })();
+
+  // ---- Chart: reach stacked bars ----
+  (function(){
+    const svg=document.getElementById('chart-reach');
+    const w=1000,h=340,pl=64,pr=16,pt=20,pb=58;
+    const mx=Math.max(...W.map(d=>d.reach||0));
+    const n=W.length, gap=6, bw=(w-pl-pr)/n-gap;
+    const y=v=>pt+(1-v/mx)*(h-pt-pb);
+    for(let g=0;g<=4;g++){const val=mx*g/4;const yy=y(val);
+      svg.appendChild(el('line',{x1:pl,y1:yy,x2:w-pr,y2:yy,stroke:'#E6E3DD','stroke-width':1}));
+      const t=el('text',{x:pl-10,y:yy+4,'text-anchor':'end','font-size':12,fill:'#8A8A8A','font-weight':600});t.textContent=fmtK(val);svg.appendChild(t);}
+    W.forEach((d,i)=>{
+      const X=pl+i*((w-pl-pr)/n)+gap/2;
+      const rf=d.reach_f||0, rn=d.reach_n||0, tot=d.reach||0;
+      const split=(rf+rn)>0;
+      if(split){
+        const hn=(h-pb)-y(rn), hf=(h-pb)-y(rf);
+        // non-follower on top, follower bottom
+        svg.appendChild(el('rect',{x:X,y:y(tot),width:bw,height:Math.max(0,(h-pb)-y(rn)),fill:'#F4A48A',rx:3}));
+        svg.appendChild(el('rect',{x:X,y:y(rf),width:bw,height:Math.max(0,(h-pb)-y(rf)),fill:'#E86F4D',rx:3}));
+      } else {
+        svg.appendChild(el('rect',{x:X,y:y(tot),width:bw,height:Math.max(0,(h-pb)-y(tot)),fill:'#D6C9BC',rx:3}));
+      }
+      const step=Math.ceil(n/9);
+      if(i%step===0||i===n-1){const t=el('text',{x:X+bw/2,y:h-pb+20,'text-anchor':'middle','font-size':11,fill:'#8A8A8A','font-weight':600});t.textContent=d.label.split('—')[0].trim();svg.appendChild(t);}
+    });
+    const note=el('text',{x:pl,y:h-12,'font-size':11.5,fill:'#8A8A8A','font-weight':500});note.textContent='Серые столбцы — недели до разбивки по типу аудитории (фев 2026 и раньше).';svg.appendChild(note);
+  })();
+
+  // ---- Chart: engagement grouped bars ----
+  (function(){
+    const svg=document.getElementById('chart-eng');
+    const w=1000,h=300,pl=64,pr=16,pt=20,pb=52;
+    const series=[['likes','#E86F4D'],['saves','#A9C2DD'],['comments','#C9A24A']];
+    const mx=Math.max(...W.map(d=>Math.max(d.likes||0,d.saves||0,d.comments||0)),1);
+    const n=W.length, gw=(w-pl-pr)/n, bw=(gw*0.74)/3;
+    const y=v=>pt+(1-v/mx)*(h-pt-pb);
+    for(let g=0;g<=4;g++){const val=mx*g/4;const yy=y(val);
+      svg.appendChild(el('line',{x1:pl,y1:yy,x2:w-pr,y2:yy,stroke:'#E6E3DD','stroke-width':1}));
+      const t=el('text',{x:pl-10,y:yy+4,'text-anchor':'end','font-size':12,fill:'#8A8A8A','font-weight':600});t.textContent=fmtK(val);svg.appendChild(t);}
+    W.forEach((d,i)=>{
+      const x0=pl+i*gw+gw*0.13;
+      series.forEach((s,si)=>{const v=d[s[0]]||0;const bx=x0+si*bw;
+        svg.appendChild(el('rect',{x:bx,y:y(v),width:bw-1.5,height:Math.max(0,(h-pb)-y(v)),fill:s[1],rx:2}));});
+      const step=Math.ceil(n/9);
+      if(i%step===0||i===n-1){const t=el('text',{x:pl+i*gw+gw/2,y:h-pb+20,'text-anchor':'middle','font-size':11,fill:'#8A8A8A','font-weight':600});t.textContent=d.label.split('—')[0].trim();svg.appendChild(t);}
+    });
+  })();
+
+  // ---- Table ----
+  (function(){
+    const cols=[['Неделя','label','t'],['Подписчики','followers','n'],['Прирост','growth','g'],
+      ['Охват','reach','n'],['Подписч.','reach_f','n'],['Неподписч.','reach_n','n'],
+      ['Лайки','likes','n'],['Комм.','comments','n'],['Сохр.','saves','n'],['Репосты','shares','n']];
+    const t=document.getElementById('tbl');
+    t.innerHTML='<thead><tr>'+cols.map(c=>'<th>'+c[0]+'</th>').join('')+'</tr></thead>';
+    const tb=document.createElement('tbody');
+    [...W].reverse().forEach(d=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=cols.map(c=>{
+        let v=d[c[1]];
+        if(c[2]==='t')return '<td>'+(v||'—')+'</td>';
+        if(c[2]==='g'){if(v==null)return '<td class="muted">—</td>';const cls=v>0?'up':(v<0?'down':'muted');return '<td class="'+cls+'">'+(v>0?'+':'')+fmt(v)+'</td>';}
+        return '<td>'+(v==null?'<span class="muted">—</span>':fmt(v))+'</td>';
+      }).join('');
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+  })();
+}).catch(e=>{document.getElementById('title').textContent='Ошибка загрузки данных';console.error(e);});
+</script>
+</body>
+</html>

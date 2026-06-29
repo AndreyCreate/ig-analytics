@@ -4,7 +4,7 @@
     "handle": "@andreyandreev.me",
     "followers_now": 62977,
     "week_growth": 792,
-    "period": "29.12 — 22.06"
+    "period": "29.12 — 29.06"
   },
   "weeks": [
     {
@@ -481,6 +481,25 @@
       "profile_views": 4451,
       "num": 25,
       "label": "16.06 — 22.06"
+    },
+    {
+      "start": "2026-06-23",
+      "week": "Неделя №26 (23.06 — 29.06)",
+      "reach": 388299,
+      "reach_f": 23792,
+      "reach_n": 368577,
+      "followers": 62977,
+      "growth": 566,
+      "likes": 40439,
+      "comments": 414,
+      "saves": 7912,
+      "shares": 16930,
+      "interactions": 83859,
+      "engaged": 47888,
+      "link_clicks": 0,
+      "profile_views": 4031,
+      "num": 26,
+      "label": "23.06 — 29.06"
     }
   ]
 }

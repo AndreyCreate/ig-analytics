@@ -142,8 +142,8 @@ fetch('data.json?v='+Date.now()).then(r=>r.json()).then(D=>{
   document.getElementById('sub').textContent=M.handle+' · '+M.period+' · '+W.length+' недель';
   document.getElementById('foll').textContent=fmt(M.followers_now);
   // updated + week delta
-  const lastG=[...W].reverse().find(w=>w.growth!=null);
-  document.getElementById('updated').innerHTML='обновлено '+M.updated+(lastG?' · <b>+'+fmt(lastG.growth)+' за неделю</b>':'');
+  const lastG=(M.week_growth!=null)?M.week_growth:([...W].reverse().find(w=>w.growth!=null)?.growth);
+  document.getElementById('updated').innerHTML='обновлено '+M.updated+(lastG!=null?' · <b>'+(lastG>=0?'+':'')+fmt(lastG)+' за неделю</b>':'');
 
   // KPIs
   const withF=W.filter(w=>w.followers!=null);

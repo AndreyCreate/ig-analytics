@@ -6,161 +6,236 @@
 <title>Еженедельная аналитика · @andreyandreev.me</title>
 <meta name="robots" content="noindex">
 <style>
-@font-face{font-family:'Manrope';src:url('fonts/Manrope-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
-@font-face{font-family:'Manrope';src:url('fonts/Manrope-Medium.ttf') format('truetype');font-weight:500;font-display:swap}
-@font-face{font-family:'Manrope';src:url('fonts/Manrope-SemiBold.ttf') format('truetype');font-weight:600;font-display:swap}
-@font-face{font-family:'Manrope';src:url('fonts/Manrope-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
-@font-face{font-family:'Manrope';src:url('fonts/Manrope-ExtraBold.ttf') format('truetype');font-weight:800;font-display:swap}
-@font-face{font-family:'Instrument Serif';src:url('fonts/InstrumentSerif-Italic.ttf') format('truetype');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:'Inter';src:url('fonts/Inter-Var.ttf') format('truetype');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Playfair Display';src:url('fonts/PlayfairDisplay.ttf') format('truetype');font-weight:400 900;font-display:swap}
+@font-face{font-family:'Playfair Display';src:url('fonts/PlayfairDisplay-Italic.ttf') format('truetype');font-weight:400 900;font-style:italic;font-display:swap}
+@font-face{font-family:'Roboto Mono';src:url('fonts/RobotoMono.ttf') format('truetype');font-weight:100 700;font-display:swap}
 :root{
-  --ink:#0E0E0E;--ink-3:#555;--ink-mute:#8A8A8A;
-  --line:#E6E3DD;--line-2:#D6D2C9;
-  --paper:#F4F0E8;--paper-2:#ECE6DA;--white:#FFFFFF;
-  --coral:#E86F4D;--coral-soft:#F4A48A;--coral-tint:#F7D9CC;
-  --green:#3E8E5A;--red:#CB4B3A;--sky:#A9C2DD;
+  --cream:#F2EDE8;--cream-2:#F6F2EE;--white:#FFFFFF;
+  --ink:#000000;--ink-2:#2B2B2B;--ink-3:#5F5F5F;--ink-mute:#919191;
+  --blue:#85ACD7;--blue-2:#88B4E3;--blue-deep:#0F5DB0;--blue-pale:#BFDEFF;
+  --orange:#E4512C;--yellow:#F5BF4F;--coral:#FF8562;
+  --r-card:20px;--r-pill:100px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{background:var(--paper);font-family:'Manrope',-apple-system,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.5}
-.wrap{max-width:1080px;margin:0 auto;padding:34px 22px 80px}
-/* header */
-header{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:18px;padding-bottom:24px;border-bottom:1px solid var(--line-2)}
-.h-l .eyebrow{font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--coral)}
-.h-l h1{font-size:32px;font-weight:800;letter-spacing:-.8px;margin-top:6px;line-height:1.05}
-.h-l .sub{font-size:14px;font-weight:500;color:var(--ink-mute);margin-top:7px}
-.h-r{text-align:right}
-.h-r .num{font-size:42px;font-weight:800;letter-spacing:-1.4px;line-height:.9}
-.h-r .lbl{font-size:13px;font-weight:600;color:var(--ink-mute);margin-top:5px}
-.updated{font-size:12px;font-weight:500;color:var(--ink-mute);margin-top:8px}
-.updated b{color:var(--green);font-weight:700}
-/* kpi */
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px}
-.kpi{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px}
-.kpi .k-lbl{font-size:12.5px;font-weight:600;color:var(--ink-mute)}
-.kpi .k-num{font-size:28px;font-weight:800;letter-spacing:-.8px;margin-top:8px;line-height:1}
-.kpi .k-foot{font-size:12px;font-weight:600;color:var(--ink-3);margin-top:6px}
-.kpi.accent{background:var(--coral);color:#fff}
-.kpi.accent .k-lbl,.kpi.accent .k-foot{color:rgba(255,255,255,.85)}
-/* sections */
-section{margin-top:30px;background:var(--white);border:1px solid var(--line);border-radius:18px;padding:24px 24px 20px}
-.sec-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:18px}
-.sec-title{font-size:17px;font-weight:800;letter-spacing:-.2px}
-.sec-note{font-size:12.5px;font-weight:500;color:var(--ink-mute)}
-.legend{display:flex;gap:16px;flex-wrap:wrap}
-.lg{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--ink-3)}
-.lg .dot{width:12px;height:12px;border-radius:3px;flex:none}
+body{background:var(--cream);font-family:'Inter',Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.5}
+.mono{font-family:'Roboto Mono',monospace}
+.container{max-width:1160px;margin:0 auto;padding:0 24px}
+
+/* ── top bar ── */
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:22px 0 0;flex-wrap:wrap}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill{font-family:'Roboto Mono',monospace;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);background:var(--white);border:1px solid rgba(0,0,0,.12);border-radius:var(--r-pill);padding:7px 14px;white-space:nowrap}
+.brand{font-family:'Playfair Display',serif;font-size:20px;color:var(--ink);white-space:nowrap}
+.brand i{font-style:italic;font-weight:500}
+
+/* ── hero ── */
+.hero{padding:64px 0 40px}
+.hero h1{font-size:52px;font-weight:650;letter-spacing:-.02em;line-height:1.08;max-width:820px}
+.hero h1 .serif{font-family:'Playfair Display',serif;font-style:italic;font-weight:500}
+.hero .sub{margin-top:16px;font-size:15px;color:var(--ink-3);max-width:520px}
+.hero .sub b{color:var(--ink)}
+/* kpi chips — как карточки-вопросы в референсе */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:36px 0 56px}
+.kpi{position:relative;background:var(--white);border-radius:16px;padding:18px 18px 16px;border:1px solid rgba(0,0,0,.06)}
+.kpi .ic{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;margin-bottom:14px}
+.kpi .k-lbl{font-family:'Roboto Mono',monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+.kpi .k-num{font-size:30px;font-weight:680;letter-spacing:-.02em;margin-top:6px;line-height:1}
+.kpi .k-foot{font-size:12px;color:var(--ink-mute);margin-top:7px}
+.kpi .arr{position:absolute;top:14px;right:16px;font-size:15px;color:var(--ink-2)}
+
+/* ── blue section with chart cards ── */
+.blue{background:var(--blue);border-radius:28px 28px 0 0;padding:56px 0 64px}
+.blue .sec-eyebrow{font-family:'Roboto Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:10px}
+.blue h2{color:var(--white);font-size:34px;font-weight:650;letter-spacing:-.02em;margin-bottom:34px;max-width:640px}
+.blue h2 .serif{font-family:'Playfair Display',serif;font-style:italic;font-weight:500}
+.card{background:var(--white);border-radius:var(--r-card);padding:26px 26px 22px;margin-bottom:18px}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.mod{display:flex;align-items:center;gap:8px;font-family:'Roboto Mono',monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--blue-deep)}
+.mod .cube{width:14px;height:14px;border-radius:4px;background:var(--blue-2);display:inline-block;flex:none}
+.card h3{font-size:24px;font-weight:640;letter-spacing:-.015em;margin:10px 0 4px}
+.card .note{font-family:'Roboto Mono',monospace;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:14px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin:4px 0 0}
+.lg{display:flex;align-items:center;gap:7px;font-family:'Roboto Mono',monospace;font-size:10.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-3)}
+.lg .dot{width:11px;height:11px;border-radius:3px;flex:none}
 svg{display:block;width:100%;height:auto;overflow:visible}
-.chart-scroll{width:100%}
-/* table */
-.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px}
-table{border-collapse:collapse;width:100%;min-width:760px;font-size:13px}
-th,td{padding:9px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
-th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--ink-mute);position:sticky;top:0;background:var(--white)}
-td:first-child,th:first-child{text-align:left;font-weight:700;color:var(--ink)}
-tbody tr:hover{background:var(--paper)}
-.up{color:var(--green);font-weight:700}.down{color:var(--red);font-weight:700}
+
+/* sticky-note insight */
+.sticky{display:inline-block;background:var(--yellow);padding:16px 20px;font-size:16px;font-weight:560;line-height:1.45;max-width:560px;border-radius:2px;box-shadow:4px 5px 0 rgba(0,0,0,.08);transform:rotate(-.4deg);margin:8px 0 26px}
+
+/* ── table ── */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:780px;font-size:13px}
+th,td{padding:10px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid rgba(0,0,0,.08)}
+th{font-family:'Roboto Mono',monospace;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-mute);position:sticky;top:0;background:var(--white)}
+td:first-child,th:first-child{text-align:left;font-weight:620;color:var(--ink)}
+tbody tr:hover{background:var(--cream-2)}
+.up{color:#2E7D46;font-weight:640}.down{color:var(--orange);font-weight:640}
 .muted{color:var(--ink-mute)}
-/* footer */
-footer{margin-top:34px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12.5px;font-weight:600;color:var(--ink-mute)}
-.handle{font-family:'Instrument Serif',serif;font-style:italic;font-size:19px;color:var(--coral)}
-@media(max-width:760px){
+
+/* ── black footer ── */
+.foot-sec{background:#0E0E0E;padding:56px 0 46px;margin-top:0}
+.foot-card{background:var(--white);border-radius:var(--r-card);padding:30px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.foot-card .brand{font-size:26px}
+.f-col .f-lbl{font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:8px}
+.f-col .f-val{font-size:13px;color:var(--ink-2);line-height:1.7}
+.foot-note{color:rgba(255,255,255,.45);font-family:'Roboto Mono',monospace;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;margin-top:26px;max-width:460px;line-height:1.8}
+
+@media(max-width:900px){
   .kpis{grid-template-columns:repeat(2,1fr)}
-  .h-l h1{font-size:25px}.h-r .num{font-size:34px}
-  .wrap{padding:24px 15px 60px}
-  section{padding:18px 15px 16px}
+  .hero h1{font-size:36px}
+  .blue h2{font-size:26px}
+}
+@media(max-width:560px){
+  .hero{padding:40px 0 24px}
+  .hero h1{font-size:29px}
+  .container{padding:0 16px}
+  .card{padding:18px 16px 16px}
+  .card h3{font-size:19px}
+  .kpi .k-num{font-size:24px}
 }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="h-l">
-      <div class="eyebrow">Еженедельная аналитика · Instagram</div>
-      <h1 id="title">Аналитика контента</h1>
-      <div class="sub" id="sub">—</div>
-    </div>
-    <div class="h-r">
-      <div class="num" id="foll">—</div>
-      <div class="lbl">подписчиков сейчас</div>
-      <div class="updated" id="updated">—</div>
-    </div>
-  </header>
 
-  <div class="kpis" id="kpis"></div>
-
-  <section>
-    <div class="sec-head">
-      <div class="sec-title">Рост подписчиков</div>
-      <div class="sec-note" id="growth-note">—</div>
+<div class="container">
+  <div class="topbar">
+    <div class="pills">
+      <span class="pill">Еженедельная аналитика</span>
+      <span class="pill">Instagram · @andreyandreev.me</span>
+      <span class="pill" id="pill-updated">обновляется еженедельно</span>
     </div>
-    <div class="chart-scroll"><svg id="chart-foll" viewBox="0 0 1000 320" preserveAspectRatio="xMidYMid meet"></svg></div>
-  </section>
+    <div class="brand"><i>Create</i> Today</div>
+  </div>
 
-  <section>
-    <div class="sec-head">
-      <div class="sec-title">Охват по неделям</div>
-      <div class="legend">
-        <div class="lg"><span class="dot" style="background:var(--coral)"></span>Подписчики</div>
-        <div class="lg"><span class="dot" style="background:var(--coral-soft)"></span>Неподписчики</div>
+  <div class="hero">
+    <h1>Сколько людей на самом деле <span class="serif">видит</span> контент?</h1>
+    <div class="sub" id="sub">Живая статистика аккаунта — подписчики, охваты и вовлечённость по неделям, <b>с начала года</b>.</div>
+    <div class="kpis" id="kpis"></div>
+  </div>
+</div>
+
+<div class="blue">
+  <div class="container">
+    <div class="sec-eyebrow">Динамика · <span id="weeks-count">—</span> недель</div>
+    <h2>Что происходит с аккаунтом <span class="serif">неделя за неделей</span></h2>
+
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="mod"><span class="cube"></span>График 01</div>
+          <h3>Рост подписчиков</h3>
+          <div class="note" id="growth-note">—</div>
+        </div>
+      </div>
+      <svg id="chart-foll" viewBox="0 0 1000 320" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="mod"><span class="cube"></span>График 02</div>
+          <h3>Охват по неделям</h3>
+          <div class="note">кого достаёт контент</div>
+        </div>
+        <div class="legend">
+          <div class="lg"><span class="dot" style="background:var(--blue-deep)"></span>Подписчики</div>
+          <div class="lg"><span class="dot" style="background:var(--blue-2)"></span>Неподписчики</div>
+          <div class="lg"><span class="dot" style="background:#D9D2C8"></span>Без разбивки</div>
+        </div>
+      </div>
+      <svg id="chart-reach" viewBox="0 0 1000 340" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="mod"><span class="cube"></span>График 03</div>
+          <h3>Вовлечённость</h3>
+          <div class="note">реакции на контент за неделю</div>
+        </div>
+        <div class="legend">
+          <div class="lg"><span class="dot" style="background:var(--orange)"></span>Лайки</div>
+          <div class="lg"><span class="dot" style="background:var(--blue-2)"></span>Сохранения</div>
+          <div class="lg"><span class="dot" style="background:var(--yellow)"></span>Комментарии</div>
+        </div>
+      </div>
+      <svg id="chart-eng" viewBox="0 0 1000 300" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+
+    <div class="sticky" id="insight" style="display:none"></div>
+
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="mod"><span class="cube"></span>Таблица</div>
+          <h3>Все недели</h3>
+          <div class="note">прокрутка вбок →</div>
+        </div>
+      </div>
+      <div class="tbl-wrap"><table id="tbl"></table></div>
+    </div>
+  </div>
+</div>
+
+<div class="foot-sec">
+  <div class="container">
+    <div class="foot-card">
+      <div class="brand"><i>Create</i> Today</div>
+      <div class="f-col">
+        <div class="f-lbl">Источник данных</div>
+        <div class="f-val">Instagram Graph API + Notion<br>обновляется автоматически, еженедельно</div>
+      </div>
+      <div class="f-col">
+        <div class="f-lbl">Аккаунт</div>
+        <div class="f-val">@andreyandreev.me<br><span id="foot-updated">—</span></div>
       </div>
     </div>
-    <div class="chart-scroll"><svg id="chart-reach" viewBox="0 0 1000 340" preserveAspectRatio="xMidYMid meet"></svg></div>
-  </section>
-
-  <section>
-    <div class="sec-head">
-      <div class="sec-title">Вовлечённость</div>
-      <div class="legend">
-        <div class="lg"><span class="dot" style="background:var(--coral)"></span>Лайки</div>
-        <div class="lg"><span class="dot" style="background:var(--sky)"></span>Сохранения</div>
-        <div class="lg"><span class="dot" style="background:#C9A24A"></span>Комментарии</div>
-      </div>
-    </div>
-    <div class="chart-scroll"><svg id="chart-eng" viewBox="0 0 1000 300" preserveAspectRatio="xMidYMid meet"></svg></div>
-  </section>
-
-  <section>
-    <div class="sec-head"><div class="sec-title">Все недели</div><div class="sec-note">прокрутка вбок →</div></div>
-    <div class="tbl-wrap"><table id="tbl"></table></div>
-  </section>
-
-  <footer>
-    <div>Данные: Instagram Graph API + Notion · обновляется еженедельно</div>
-    <div class="handle">Andrey Andreev</div>
-  </footer>
+    <div class="foot-note">Публикуются только контент-метрики: охваты, подписчики, вовлечённость.</div>
+  </div>
 </div>
 
 <script>
-const fmt=n=>(n==null?'—':Math.round(n).toLocaleString('ru-RU').replace(/\s/g,' '));
+const fmt=n=>(n==null?'—':Math.round(n).toLocaleString('ru-RU').replace(/\s/g,' '));
 const fmtK=n=>{if(n==null)return '—';if(n>=1e6)return (n/1e6).toFixed(n>=1e7?0:1).replace('.',',')+'M';if(n>=1e3)return Math.round(n/1e3)+'K';return n;};
 const SVGNS='http://www.w3.org/2000/svg';
 function el(t,a){const e=document.createElementNS(SVGNS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+const AXIS={fs:11,fill:'#919191',grid:'#EDE8E1',font:'Roboto Mono, monospace'};
+function axisText(svg,x,y,txt,anchor){const t=el('text',{x,y,'text-anchor':anchor||'middle','font-size':AXIS.fs,fill:AXIS.fill,'font-family':AXIS.font});t.textContent=txt;svg.appendChild(t);}
 
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(D=>{
   const W=D.weeks, M=D.meta;
-  document.getElementById('title').textContent='Аналитика контента';
-  document.getElementById('sub').textContent=M.handle+' · '+M.period+' · '+W.length+' недель';
-  document.getElementById('foll').textContent=fmt(M.followers_now);
-  // updated + week delta
-  const lastG=(M.week_growth!=null)?M.week_growth:([...W].reverse().find(w=>w.growth!=null)?.growth);
-  document.getElementById('updated').innerHTML='обновлено '+M.updated+(lastG!=null?' · <b>'+(lastG>=0?'+':'')+fmt(lastG)+' за неделю</b>':'');
+  document.getElementById('sub').innerHTML='Живая статистика аккаунта '+M.handle+' — подписчики, охваты и вовлечённость по неделям. Период: <b>'+M.period+'</b>.';
+  document.getElementById('pill-updated').textContent='обновлено '+M.updated;
+  document.getElementById('weeks-count').textContent=W.length;
+  document.getElementById('foot-updated').textContent='данные на '+M.updated;
 
   // KPIs
   const withF=W.filter(w=>w.followers!=null);
-  const ytd=withF.length?withF[withF.length-1].followers-withF[0].followers:null;
   const bestReach=W.reduce((a,w)=>(w.reach||0)>(a.reach||0)?w:a,W[0]);
   const avgReach=Math.round(W.reduce((s,w)=>s+(w.reach||0),0)/W.length);
-  const sumGrowth=W.reduce((s,w)=>s+(w.growth||0),0);
+  const lastG=(M.week_growth!=null)?M.week_growth:([...W].reverse().find(w=>w.growth!=null)?.growth);
   const kpis=[
-    {l:'Подписчиков сейчас',n:fmt(M.followers_now),f:'старт года ≈ '+fmt(withF[0]?.followers),accent:true},
-    {l:'Прирост за период',n:'+'+fmt((M.followers_now)-(withF[0]?.followers||0)),f:'с начала года'},
-    {l:'Лучшая неделя · охват',n:fmtK(bestReach.reach),f:bestReach.label},
-    {l:'Средний охват / нед',n:fmtK(avgReach),f:'за '+W.length+' недель'},
+    {l:'Подписчиков сейчас',n:fmt(M.followers_now),f:(lastG!=null?(lastG>=0?'+':'')+fmt(lastG)+' за неделю':''),ic:'◎',bg:'#FFE9E1',c:'var(--orange)'},
+    {l:'Прирост за период',n:'+'+fmt((M.followers_now)-(withF[0]?.followers||0)),f:'старт года ≈ '+fmt(withF[0]?.followers),ic:'↗',bg:'#FFF3D6',c:'#B8860B'},
+    {l:'Лучшая неделя · охват',n:fmtK(bestReach.reach),f:bestReach.label,ic:'▲',bg:'#E3EEFF',c:'var(--blue-deep)'},
+    {l:'Средний охват / нед',n:fmtK(avgReach),f:'за '+W.length+' недель',ic:'≈',bg:'#EAF6EC',c:'#2E7D46'},
   ];
   document.getElementById('kpis').innerHTML=kpis.map(k=>
-    `<div class="kpi ${k.accent?'accent':''}"><div class="k-lbl">${k.l}</div><div class="k-num">${k.n}</div><div class="k-foot">${k.f}</div></div>`).join('');
+    `<div class="kpi"><div class="ic" style="background:${k.bg};color:${k.c}">${k.ic}</div><span class="arr">↘</span><div class="k-lbl">${k.l}</div><div class="k-num">${k.n}</div><div class="k-foot">${k.f}</div></div>`).join('');
 
-  // ---- Chart: followers line ----
+  // insight sticky note
+  (function(){
+    const first=withF[0], last=withF[withF.length-1];
+    if(!first||!last)return;
+    const growth=last.followers-first.followers;
+    const e=document.getElementById('insight');
+    e.style.display='inline-block';
+    e.textContent='Рост с начала года — +'+fmt(growth)+'. Рекорд охвата — '+fmtK(bestReach.reach)+' за неделю '+bestReach.label+'.';
+  })();
+
+  // ---- Chart: followers line (orange on white) ----
   (function(){
     const svg=document.getElementById('chart-foll');
     const w=1000,h=320,pl=64,pr=16,pt=20,pb=46;
@@ -169,29 +244,26 @@ fetch('data.json?v='+Date.now()).then(r=>r.json()).then(D=>{
     const mn=Math.min(...valid.map(p=>p.v)), mx=Math.max(...valid.map(p=>p.v));
     const x=i=>pl+(i/(W.length-1))*(w-pl-pr);
     const y=v=>pt+(1-(v-mn)/(mx-mn))*(h-pt-pb);
-    // gridlines
     for(let g=0;g<=4;g++){const val=mn+(mx-mn)*g/4;const yy=y(val);
-      svg.appendChild(el('line',{x1:pl,y1:yy,x2:w-pr,y2:yy,stroke:'#E6E3DD','stroke-width':1}));
-      const t=el('text',{x:pl-10,y:yy+4,'text-anchor':'end','font-size':12,fill:'#8A8A8A','font-weight':600});t.textContent=fmtK(val);svg.appendChild(t);}
-    // area + line across valid points (handles gaps by connecting valid ones in order)
-    let dPath='',aPath='';
+      svg.appendChild(el('line',{x1:pl,y1:yy,x2:w-pr,y2:yy,stroke:AXIS.grid,'stroke-width':1}));
+      axisText(svg,pl-10,yy+4,fmtK(val),'end');}
+    let dPath='';
     valid.forEach((p,k)=>{const X=x(p.i),Y=y(p.v);dPath+=(k?'L':'M')+X+' '+Y+' ';});
     const x0=x(valid[0].i),xn=x(valid[valid.length-1].i);
-    aPath='M'+x0+' '+(h-pb)+' '+valid.map(p=>'L'+x(p.i)+' '+y(p.v)).join(' ')+' L'+xn+' '+(h-pb)+' Z';
+    const aPath='M'+x0+' '+(h-pb)+' '+valid.map(p=>'L'+x(p.i)+' '+y(p.v)).join(' ')+' L'+xn+' '+(h-pb)+' Z';
     const grad=el('linearGradient',{id:'gF',x1:0,y1:0,x2:0,y2:1});
-    grad.appendChild(el('stop',{offset:0,'stop-color':'#E86F4D','stop-opacity':.22}));
-    grad.appendChild(el('stop',{offset:1,'stop-color':'#E86F4D','stop-opacity':0}));
+    grad.appendChild(el('stop',{offset:0,'stop-color':'#E4512C','stop-opacity':.18}));
+    grad.appendChild(el('stop',{offset:1,'stop-color':'#E4512C','stop-opacity':0}));
     svg.appendChild(grad);
     svg.appendChild(el('path',{d:aPath,fill:'url(#gF)'}));
-    svg.appendChild(el('path',{d:dPath,fill:'none',stroke:'#E86F4D','stroke-width':2.6,'stroke-linejoin':'round','stroke-linecap':'round'}));
-    valid.forEach(p=>svg.appendChild(el('circle',{cx:x(p.i),cy:y(p.v),r:3,fill:'#fff',stroke:'#E86F4D','stroke-width':2})));
-    // x labels (every Nth)
+    svg.appendChild(el('path',{d:dPath,fill:'none',stroke:'#E4512C','stroke-width':2.6,'stroke-linejoin':'round','stroke-linecap':'round'}));
+    valid.forEach(p=>svg.appendChild(el('circle',{cx:x(p.i),cy:y(p.v),r:3,fill:'#fff',stroke:'#E4512C','stroke-width':2})));
     const step=Math.ceil(W.length/8);
-    W.forEach((d,i)=>{if(i%step&&i!==W.length-1)return;const t=el('text',{x:x(i),y:h-pb+22,'text-anchor':'middle','font-size':11,fill:'#8A8A8A','font-weight':600});t.textContent=d.label.split('—')[0].trim();svg.appendChild(t);});
+    W.forEach((d,i)=>{if(i%step&&i!==W.length-1)return;axisText(svg,x(i),h-pb+22,d.label.split('—')[0].trim());});
     document.getElementById('growth-note').textContent='от '+fmt(valid[0].v)+' до '+fmt(valid[valid.length-1].v);
   })();
 
-  // ---- Chart: reach stacked bars ----
+  // ---- Chart: reach stacked bars (blues) ----
   (function(){
     const svg=document.getElementById('chart-reach');
     const w=1000,h=340,pl=64,pr=16,pt=20,pb=58;
@@ -199,43 +271,41 @@ fetch('data.json?v='+Date.now()).then(r=>r.json()).then(D=>{
     const n=W.length, gap=6, bw=(w-pl-pr)/n-gap;
     const y=v=>pt+(1-v/mx)*(h-pt-pb);
     for(let g=0;g<=4;g++){const val=mx*g/4;const yy=y(val);
-      svg.appendChild(el('line',{x1:pl,y1:yy,x2:w-pr,y2:yy,stroke:'#E6E3DD','stroke-width':1}));
-      const t=el('text',{x:pl-10,y:yy+4,'text-anchor':'end','font-size':12,fill:'#8A8A8A','font-weight':600});t.textContent=fmtK(val);svg.appendChild(t);}
+      svg.appendChild(el('line',{x1:pl,y1:yy,x2:w-pr,y2:yy,stroke:AXIS.grid,'stroke-width':1}));
+      axisText(svg,pl-10,yy+4,fmtK(val),'end');}
     W.forEach((d,i)=>{
       const X=pl+i*((w-pl-pr)/n)+gap/2;
       const rf=d.reach_f||0, rn=d.reach_n||0, tot=d.reach||0;
       const split=(rf+rn)>0;
       if(split){
-        const hn=(h-pb)-y(rn), hf=(h-pb)-y(rf);
-        // non-follower on top, follower bottom
-        svg.appendChild(el('rect',{x:X,y:y(tot),width:bw,height:Math.max(0,(h-pb)-y(rn)),fill:'#F4A48A',rx:3}));
-        svg.appendChild(el('rect',{x:X,y:y(rf),width:bw,height:Math.max(0,(h-pb)-y(rf)),fill:'#E86F4D',rx:3}));
+        svg.appendChild(el('rect',{x:X,y:y(tot),width:bw,height:Math.max(0,(h-pb)-y(rn)),fill:'#88B4E3',rx:3}));
+        svg.appendChild(el('rect',{x:X,y:y(rf),width:bw,height:Math.max(0,(h-pb)-y(rf)),fill:'#0F5DB0',rx:3}));
       } else {
-        svg.appendChild(el('rect',{x:X,y:y(tot),width:bw,height:Math.max(0,(h-pb)-y(tot)),fill:'#D6C9BC',rx:3}));
+        svg.appendChild(el('rect',{x:X,y:y(tot),width:bw,height:Math.max(0,(h-pb)-y(tot)),fill:'#D9D2C8',rx:3}));
       }
       const step=Math.ceil(n/9);
-      if(i%step===0||i===n-1){const t=el('text',{x:X+bw/2,y:h-pb+20,'text-anchor':'middle','font-size':11,fill:'#8A8A8A','font-weight':600});t.textContent=d.label.split('—')[0].trim();svg.appendChild(t);}
+      if(i%step===0||i===n-1){axisText(svg,X+bw/2,h-pb+20,d.label.split('—')[0].trim());}
     });
-    const note=el('text',{x:pl,y:h-12,'font-size':11.5,fill:'#8A8A8A','font-weight':500});note.textContent='Серые столбцы — недели до разбивки по типу аудитории (фев 2026 и раньше).';svg.appendChild(note);
+    const note=el('text',{x:pl,y:h-12,'font-size':10.5,fill:AXIS.fill,'font-family':AXIS.font});note.textContent='СЕРЫЕ СТОЛБЦЫ — НЕДЕЛИ ДО РАЗБИВКИ ПО ТИПУ АУДИТОРИИ (ФЕВ 2026 И РАНЬШЕ)';svg.appendChild(note);
   })();
 
   // ---- Chart: engagement grouped bars ----
   (function(){
     const svg=document.getElementById('chart-eng');
     const w=1000,h=300,pl=64,pr=16,pt=20,pb=52;
-    const series=[['likes','#E86F4D'],['saves','#A9C2DD'],['comments','#C9A24A']];
+    const series=[['likes','#E4512C'],['saves','#88B4E3'],['comments','#F5BF4F']];
     const mx=Math.max(...W.map(d=>Math.max(d.likes||0,d.saves||0,d.comments||0)),1);
     const n=W.length, gw=(w-pl-pr)/n, bw=(gw*0.74)/3;
     const y=v=>pt+(1-v/mx)*(h-pt-pb);
     for(let g=0;g<=4;g++){const val=mx*g/4;const yy=y(val);
-      svg.appendChild(el('line',{x1:pl,y1:yy,x2:w-pr,y2:yy,stroke:'#E6E3DD','stroke-width':1}));
-      const t=el('text',{x:pl-10,y:yy+4,'text-anchor':'end','font-size':12,fill:'#8A8A8A','font-weight':600});t.textContent=fmtK(val);svg.appendChild(t);}
+      svg.appendChild(el('line',{x1:pl,y1:yy,x2:w-pr,y2:yy,stroke:AXIS.grid,'stroke-width':1}));
+      axisText(svg,pl-10,yy+4,fmtK(val),'end');}
     W.forEach((d,i)=>{
       const x0=pl+i*gw+gw*0.13;
       series.forEach((s,si)=>{const v=d[s[0]]||0;const bx=x0+si*bw;
         svg.appendChild(el('rect',{x:bx,y:y(v),width:bw-1.5,height:Math.max(0,(h-pb)-y(v)),fill:s[1],rx:2}));});
       const step=Math.ceil(n/9);
-      if(i%step===0||i===n-1){const t=el('text',{x:pl+i*gw+gw/2,y:h-pb+20,'text-anchor':'middle','font-size':11,fill:'#8A8A8A','font-weight':600});t.textContent=d.label.split('—')[0].trim();svg.appendChild(t);}
+      if(i%step===0||i===n-1){axisText(svg,pl+i*gw+gw/2,h-pb+20,d.label.split('—')[0].trim());}
     });
   })();
 
@@ -259,7 +329,7 @@ fetch('data.json?v='+Date.now()).then(r=>r.json()).then(D=>{
     });
     t.appendChild(tb);
   })();
-}).catch(e=>{document.getElementById('title').textContent='Ошибка загрузки данных';console.error(e);});
+}).catch(e=>{document.getElementById('sub').textContent='Ошибка загрузки данных';console.error(e);});
 </script>
 </body>
 </html>

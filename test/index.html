@@ -82,10 +82,12 @@ tbody tr:hover{background:var(--cream-2)}
 .bm-up{color:#2E7D46;font-weight:640}
 .bm-down{color:var(--orange);font-weight:640}
 .bm-mid{color:var(--ink-3);font-weight:600}
-.bm-arr{font-weight:700}
-.bm-d{font-size:10.5px;opacity:.72;font-family:'Roboto Mono',monospace}
+.bm-badge{display:inline-block;font-family:'Roboto Mono',monospace;font-size:9.5px;font-weight:600;letter-spacing:.02em;padding:2px 6px;border-radius:8px;margin-left:6px;vertical-align:1px;cursor:help}
+.bm-badge.bm-up{background:#EAF6EC}
+.bm-badge.bm-down{background:#FFE9E1}
+.bm-badge.bm-mid{background:#EFEBE5}
 th.bm-col{color:var(--blue-deep)}
-td[title]{cursor:help}
+td[title],th[title]{cursor:help}
 .method{background:var(--white);border-radius:var(--r-card);padding:26px 26px 24px;margin-bottom:18px}
 .method h3{font-size:20px;font-weight:640;letter-spacing:-.015em;margin:10px 0 12px}
 .method p,.method li{font-size:13.5px;color:var(--ink-2);line-height:1.65}
@@ -195,7 +197,7 @@ td[title]{cursor:help}
         <div>
           <div class="mod"><span class="cube"></span>Таблица</div>
           <h3>Все недели</h3>
-          <div class="note">прокрутка вбок → · 3 правые колонки — бенчмарки (тест), * — см. методологию ниже</div>
+          <div class="note">прокрутка вбок → · бейджи у охвата, лайков и комментариев — сравнение с медианой рынка на пост (тест), * — методология ниже</div>
         </div>
       </div>
       <div class="tbl-wrap"><table id="tbl"></table></div>
@@ -203,23 +205,24 @@ td[title]{cursor:help}
 
     <div class="method">
       <div class="mod"><span class="cube"></span>Тест · Методология бенчмарков</div>
-      <h3>Как считались стрелки — и что мы сознательно не сравнивали</h3>
-      <p>Аккаунт — 63&nbsp;012 подписчиков, индустриальный тир <b>50–500K</b>. Стрелки: <span class="bm-up">↑</span> — выше ориентира, <span class="bm-down">↓</span> — ниже, <span class="bm-mid">≈</span> — внутри диапазона (или ±10% от ориентира). Рядом со значением — отклонение от медианы (в %, либо ×N, если разница больше 10 раз). У каждой ячейки есть тултип с формулой и источником — наведите курсор.</p>
+      <h3>Как считаются бейджи — и что сознательно не сравнивается</h3>
+      <p>Аккаунт — 63&nbsp;012 подписчиков, индустриальный тир <b>50–500K</b>. Рядом с охватом, лайками и комментариями стоит бейдж: <span class="bm-badge bm-up">↑ +X%</span> — показатель <b>на пост</b> выше медианы рынка, <span class="bm-badge bm-down">↓ −X%</span> — ниже, <span class="bm-badge bm-mid">≈</span> — в пределах ±10% (при разнице более чем в 10 раз — ×N). У каждого бейджа тултип с формулой и цифрами — наведите курсор.</p>
       <ul>
-        <li><b>ER по подписчикам</b> = (лайки + комментарии) за неделю ÷ подписчики × 100. Ориентиры: медиана <b>0,36%</b> на пост и топ-25% <b>1,02%</b> (Rival IQ 2025, бренды). Зелёная стрелка — только выше верхней границы 1,02%; красная — ниже 0,36%. Важно: наше значение — <b>сумма за неделю</b> (несколько постов), бенчмарк — <b>на один пост</b>. Поэтому красная стрелка надёжна, а зелёная — мягкая, завышенная в нашу пользу оценка.</li>
-        <li><b>ER по охвату</b> = (лайки + комментарии) ÷ охват × 100. Ориентир: <b>3,0%</b> (Socialinsider 2025, среднее). Это метрика-отношение: недельное значение равно средневзвешенному ER постов недели, так что из трёх сравнений это — самое корректное.</li>
-        <li><b>Reach rate</b> = охват ÷ подписчики × 100. Ориентир: <b>3,5% на один пост</b> (Socialinsider 2025, среднее; выборка в основном бренд-аккаунты). Недельный охват суммирует все посты недели — сравнение заведомо мягкое в зелёную сторону; оставлено как грубый ориентир.</li>
+        <li><b>Нормировка на пост.</b> Недельная сумма делится на число публикаций ленты за эту неделю (колонка «Постов»; выгружено из IG Graph API 09.07.2026: Reels, карусели, фото — сторис не считаются постами).</li>
+        <li><b>Медиана под микс недели.</b> Бенчмарк взвешивается по фактическому сплиту типов контента недели: охват — Reels 13,7K / карусели 12,8K / фото 11,1K на пост; лайки — 461 / 824 / 380; комментарии — 13 / 15 / 6 (Metricool × HypeAuditor «Instagram Content Playbook 2025», 700 млн постов, медианы на пост, тир 50–500K, аккаунты-креаторы). Пример: неделя из 1 Reels и 6 каруселей сравнивается с (1×13&nbsp;700 + 6×12&nbsp;800) ÷ 7 = 12&nbsp;929 охвата на пост.</li>
+        <li><b>Если сплит по типам недоступен</b> (например, свежая неделя ещё не выгружена в enrich.json) — используется диапазон медиан от минимальной до максимальной по типам: стрелка ставится только вне диапазона, внутри — «≈».</li>
       </ul>
-      <p><b>Что НЕ сравнивали и почему.</b> Медианы «на пост» тира 50–500K (Metricool × HypeAuditor 2025: охват — Reels 13,7K / карусели 12,8K / фото 11,1K; лайки — 824 карусель / 461 Reels / 380 фото; комментарии — 15/13/6) к недельным колонкам «Охват», «Лайки», «Комм.», «Сохр.», «Репосты» <b>не применялись</b>: в данных дашборда нет числа постов за неделю, нормализовать «на пост» нечем, а сравнивать сумму недели с медианой одного поста — нечестно.</p>
+      <p><b>Оговорки — честность важнее красоты.</b></p>
       <ul>
-        <li>ER-формулы разных исследований не смешиваются: «by followers» сравнивается только с бенчмарками «by followers», «by reach» — только с «by reach».</li>
-        <li>Медианы глобальные (выборки преимущественно EN/ES); ниша «коучинг/саморазвитие» и русскоязычный сегмент отдельно не бенчмаркуются ни одним крупным исследованием.</li>
-        <li>Rival IQ измеряет бренд-аккаунты; креаторы получают в ~3 раза больше вовлечения, чем бренды того же размера (Metricool 2025), — реальная планка для личного бренда выше этих медиан.</li>
-        <li>Недели №1–8 (до разбивки вовлечённости, февраль 2026 и раньше) и недели без данных о подписчиках — прочерк: ER по нулевой/отсутствующей вовлечённости не считается.</li>
-        <li>Сохранения и репосты в ER этих исследований не входят, хотя для каруселей это часто главная метрика ценности.</li>
-        <li>Охват Instagram падает ~12% в год (Socialinsider) — бенчмарки 2025 года устаревают, ориентиры стоит обновлять минимум раз в год.</li>
+        <li>Охват недели в дашборде — <b>на уровне аккаунта</b> (включая сторис и «хвост» охвата старых постов), а делится на новые публикации недели. Это оценка сверху: реальный охват на новый пост ниже. То же, в меньшей степени, с лайками и комментариями.</li>
+        <li>В число постов входят все публикации ленты, включая частые цитатные Reels — недели с массовым автопостингом (например, 16.06–22.06: 52 публикации) дают «разбавленные» цифры на пост.</li>
+        <li>Медианы глобальные (EN/ES-выборки); ниша «коучинг/саморазвитие» и русскоязычный сегмент отдельно не бенчмаркуются ни одним крупным исследованием.</li>
+        <li>Недели №1–8: вовлечённость в выгрузке отсутствует (нули) — бейджей у лайков и комментариев нет, чтобы не показывать ложные «−100%».</li>
+        <li>ER-метрики (by followers / by reach) не сравниваются: колонок ER в данных дашборда нет, а смешивать ER-формулы разных исследований нельзя.</li>
+        <li>Сохранения и репосты не бенчмаркуются: верифицируемых индустриальных медиан по ним в исследованиях 2025 года нет.</li>
+        <li>Охват Instagram падает ~12% в год (Socialinsider 2025) — ориентиры устаревают, обновлять минимум раз в год.</li>
       </ul>
-      <p class="src">Источники: Metricool × HypeAuditor «Instagram Content Playbook 2025» (700 млн постов, медианы на пост); Rival IQ «2025 Social Media Industry Benchmark Report» (медианы, бренды); Socialinsider «Instagram Benchmarks 2025/2026» (средние значения). Тестовая версия от 09.07.2026; лайв-дашборд не изменён.</p>
+      <p class="src">Источники: Metricool × HypeAuditor «Instagram Content Playbook 2025» (медианы на пост, аккаунты-креаторы); число постов — IG Graph API /media (media_product_type/media_type, недели по UTC). Тестовая версия от 09.07.2026; лайв-дашборд не изменён.</p>
     </div>
   </div>
 </div>
@@ -249,7 +252,10 @@ function el(t,a){const e=document.createElementNS(SVGNS,t);for(const k in a)e.se
 const AXIS={fs:11,fill:'#919191',grid:'#EDE8E1',font:'Roboto Mono, monospace'};
 function axisText(svg,x,y,txt,anchor){const t=el('text',{x,y,'text-anchor':anchor||'middle','font-size':AXIS.fs,fill:AXIS.fill,'font-family':AXIS.font});t.textContent=txt;svg.appendChild(t);}
 
-fetch('../data.json?v='+Date.now()).then(r=>r.json()).then(D=>{
+Promise.all([
+  fetch('../data.json?v='+Date.now()).then(r=>r.json()),
+  fetch('enrich.json?v='+Date.now()).then(r=>r.ok?r.json():{weeks:{}}).catch(()=>({weeks:{}}))
+]).then(([D,EN])=>{
   const W=D.weeks, M=D.meta;
   document.getElementById('sub').innerHTML='Живая статистика аккаунта '+M.handle+' — подписчики, охваты и вовлечённость по неделям. Период: <b>'+M.period+'</b>.';
   document.getElementById('pill-updated').textContent='обновлено '+M.updated;
@@ -354,49 +360,61 @@ fetch('../data.json?v='+Date.now()).then(r=>r.json()).then(D=>{
     });
   })();
 
-  // ---- Table + бенчмарк-колонки (ТЕСТ) ----
+  // ---- Table + бенчмарк-бейджи у цифр (ТЕСТ) ----
   (function(){
-    const pctFmt=v=>(v>=10?v.toFixed(1):v.toFixed(2)).replace('.',',')+'%';
-    function bmCell(val,lo,hi,med,tip){
-      if(val==null)return '<td class="muted" title="нет данных для расчёта за эту неделю">—</td>';
+    const E=(EN&&EN.weeks)||{};
+    const MED={reach:{r:13700,c:12800,i:11100},likes:{r:461,c:824,i:380},comments:{r:13,c:15,i:6}};
+    const NAME={reach:'Охват',likes:'Лайки',comments:'Комментарии'};
+    const mixTxt=en=>[en.reels?en.reels+' Reels':'',en.carousels?en.carousels+' карус.':'',en.images?en.images+' фото':''].filter(Boolean).join(' + ');
+    function badge(d,m){
+      const en=E[d.start];
+      if(!en||!en.posts)return '';                       // нет данных о постах недели — без бейджа
+      const raw=d[m];
+      if(raw==null)return '';
+      if(m!=='reach'&&(d.likes||0)+(d.comments||0)+(d.saves||0)===0)return ''; // вовлечённость за неделю не выгружалась (недели 1–8)
+      const pp=raw/en.posts;
+      const M=MED[m];
+      let med,lo,hi,how;
+      if(en.reels+en.carousels+en.images===en.posts){    // сплит известен — взвешенная медиана
+        med=(en.reels*M.r+en.carousels*M.c+en.images*M.i)/en.posts;
+        lo=med*0.9;hi=med*1.1;
+        how='медиана рынка под микс недели ('+mixTxt(en)+'): '+fmt(med)+'/пост';
+      } else {                                           // сплита нет — blended-диапазон
+        lo=Math.min(M.r,M.c,M.i);hi=Math.max(M.r,M.c,M.i);med=(lo+hi)/2;
+        how='сплит по типам неизвестен — диапазон медиан '+fmt(lo)+'\u2013'+fmt(hi)+'/пост, стрелка только вне диапазона';
+      }
       let cls,arr;
-      if(val>hi){cls='bm-up';arr='\u2191';}else if(val<lo){cls='bm-down';arr='\u2193';}else{cls='bm-mid';arr='\u2248';}
-      const ratio=val/med;
-      const delta=ratio>=10?'\u00d7'+Math.round(ratio):((ratio-1>=0?'+':'')+Math.round((ratio-1)*100)+'%');
-      return '<td class="'+cls+'" title="'+tip.replace(/"/g,'&quot;')+'">'+pctFmt(val)+' <span class="bm-arr">'+arr+'</span> <span class="bm-d">'+delta+'</span></td>';
+      if(pp>hi){cls='bm-up';arr='\u2191';}else if(pp<lo){cls='bm-down';arr='\u2193';}else{cls='bm-mid';arr='\u2248';}
+      const ratio=pp/med;
+      const delta=ratio>=10?'\u00d7'+Math.round(ratio):((ratio>=1?'+':'\u2212')+Math.abs(Math.round((ratio-1)*100))+'%');
+      const tip=NAME[m]+' на пост = '+fmt(raw)+' \u00f7 '+en.posts+' публ. = '+fmt(pp)+'; '+how
+        +'. Источник: Metricool \u00d7 HypeAuditor «Instagram Content Playbook 2025», тир 50\u2013500K, медианы на один пост. \u0394 к медиане: '+delta+'. Зона \u2248: \u00b110%.'
+        +(m==='reach'?' Оговорка: охват недели \u2014 весь аккаунт (вкл. сторис и хвост старых постов) \u00f7 новые публикации недели, оценка сверху.':'');
+      return ' <span class="bm-badge '+cls+'" title="'+tip.replace(/"/g,'&quot;')+'">'+arr+' '+delta+'</span>';
     }
     const cols=[['Неделя','label','t'],['Подписчики','followers','n'],['Прирост','growth','g'],
-      ['Охват','reach','n'],['Подписч.','reach_f','n'],['Неподписч.','reach_n','n'],
-      ['Лайки','likes','n'],['Комм.','comments','n'],['Сохр.','saves','n'],['Репосты','shares','n']];
-    const bmHead=[
-      ['ER подписч.','Бенчмарк-колонка (ТЕСТ). (Лайки+комментарии) за неделю \u00f7 подписчики \u00d7 100. Ориентиры: медиана 0,36% на пост / топ-25% 1,02% (Rival IQ 2025, бренды).'],
-      ['ER охват','Бенчмарк-колонка (ТЕСТ). (Лайки+комментарии) \u00f7 охват \u00d7 100. Ориентир: 3,0% (Socialinsider 2025). Наиболее корректное из трёх сравнений.'],
-      ['Reach rate','Бенчмарк-колонка (ТЕСТ). Охват недели \u00f7 подписчики \u00d7 100. Ориентир: 3,5% на ОДИН пост (Socialinsider 2025) — сравнение мягкое, см. методологию.']];
+      ['Охват','reach','n','bm'],['Подписч.','reach_f','n'],['Неподписч.','reach_n','n'],
+      ['Лайки','likes','n','bm'],['Комм.','comments','n','bm'],['Сохр.','saves','n'],['Репосты','shares','n'],
+      ['Постов','_posts','p']];
     const t=document.getElementById('tbl');
-    t.innerHTML='<thead><tr>'+cols.map(c=>'<th>'+c[0]+'</th>').join('')
-      +bmHead.map(h=>'<th class="bm-col" title="'+h[1]+'">'+h[0]+' *</th>').join('')+'</tr></thead>';
+    t.innerHTML='<thead><tr>'+cols.map(c=>{
+      if(c[3]==='bm')return '<th class="bm-col" title="Бейдж рядом с цифрой (ТЕСТ): показатель НА ПОСТ против медианы рынка вашего тира 50\u2013500K (Metricool \u00d7 HypeAuditor 2025). Зелёный \u2191 \u2014 выше, красный \u2193 \u2014 ниже, \u2248 \u2014 \u00b110%. Наведите на бейдж \u2014 формула и цифры.">'+c[0]+' *</th>';
+      if(c[2]==='p')return '<th title="Публикации ленты за неделю (IG Graph API): Reels + карусели + фото. По ним нормируются бейджи.">'+c[0]+'</th>';
+      return '<th>'+c[0]+'</th>';
+    }).join('')+'</tr></thead>';
     const tb=document.createElement('tbody');
     [...W].reverse().forEach(d=>{
       const tr=document.createElement('tr');
-      let html=cols.map(c=>{
+      tr.innerHTML=cols.map(c=>{
+        if(c[2]==='p'){const en=E[d.start];
+          if(!en)return '<td class="muted">\u2014</td>';
+          return '<td class="muted" title="'+(mixTxt(en)||'нет публикаций')+'">'+en.posts+'</td>';}
         let v=d[c[1]];
         if(c[2]==='t')return '<td>'+(v||'\u2014')+'</td>';
         if(c[2]==='g'){if(v==null)return '<td class="muted">\u2014</td>';const cls=v>0?'up':(v<0?'down':'muted');return '<td class="'+cls+'">'+(v>0?'+':'')+fmt(v)+'</td>';}
-        return '<td>'+(v==null?'<span class="muted">\u2014</span>':fmt(v))+'</td>';
+        const b=(c[3]==='bm')?badge(d,c[1]):'';
+        return '<td>'+(v==null?'<span class="muted">\u2014</span>':fmt(v))+b+'</td>';
       }).join('');
-      // бенчмарки: считаем только сопоставимое
-      const eng=(d.likes||0)+(d.comments||0);
-      const engOk=eng>0; // недели 1–8: вовлечённость не выгружалась (нули) — не считаем ER
-      const erf=(engOk&&d.followers)?eng/d.followers*100:null;
-      const err=(engOk&&d.reach)?eng/d.reach*100:null;
-      const rr=(d.reach&&d.followers)?d.reach/d.followers*100:null;
-      html+=bmCell(erf,0.36,1.02,0.36,
-        'ER по подписчикам = ('+fmt(d.likes)+' лайков + '+fmt(d.comments)+' комм.) \u00f7 '+fmt(d.followers)+' подписчиков \u00d7 100 = '+(erf==null?'\u2014':pctFmt(erf))+'. Бенчмарк: медиана 0,36% на пост, топ-25% = 1,02% (Rival IQ 2025, бренды, все индустрии). Зелёная — выше 1,02%, красная — ниже 0,36%, \u2248 — между. ВАЖНО: здесь сумма за неделю против медианы на один пост — красная стрелка надёжна, зелёная — мягкая оценка. \u0394 к медиане 0,36%.');
-      html+=bmCell(err,2.7,3.3,3.0,
-        'ER по охвату = ('+fmt(d.likes)+' + '+fmt(d.comments)+') \u00f7 охват '+fmt(d.reach)+' \u00d7 100 = '+(err==null?'\u2014':pctFmt(err))+'. Бенчмарк: 3,0% (Socialinsider 2025, среднее). Ratio-метрика: недельное значение = средневзвешенный ER постов недели, сравнение корректное. Зона \u2248: \u00b110% (2,7\u20133,3%). \u0394 к 3,0%.');
-      html+=bmCell(rr,3.15,3.85,3.5,
-        'Reach rate = охват '+fmt(d.reach)+' \u00f7 '+fmt(d.followers)+' подписчиков \u00d7 100 = '+(rr==null?'\u2014':pctFmt(rr))+'. Бенчмарк: 3,5% на ОДИН пост (Socialinsider 2025, среднее, в основном бренды). Недельный охват суммирует все посты недели — сравнение заведомо мягкое в зелёную сторону; грубый ориентир. \u0394 к 3,5%.');
-      tr.innerHTML=html;
       tb.appendChild(tr);
     });
     t.appendChild(tb);

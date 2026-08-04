@@ -1,10 +1,10 @@
 {
   "meta": {
-    "updated": "2026-08-03",
+    "updated": "2026-08-04",
     "handle": "@andreyandreev.me",
-    "followers_now": 65037,
-    "week_growth": 970,
-    "period": "29.12 — 27.07"
+    "followers_now": 65063,
+    "week_growth": 727,
+    "period": "29.12 — 03.08"
   },
   "weeks": [
     {
@@ -576,6 +576,25 @@
       "profile_views": 7901,
       "num": 30,
       "label": "21.07 — 27.07"
+    },
+    {
+      "start": "2026-07-28",
+      "week": "Неделя №31 (28.07 — 03.08)",
+      "reach": 138460,
+      "reach_f": 21651,
+      "reach_n": 114535,
+      "followers": 65065,
+      "growth": 427,
+      "likes": 7205,
+      "comments": 571,
+      "saves": 6592,
+      "shares": 3300,
+      "interactions": 21109,
+      "engaged": 11744,
+      "link_clicks": 156,
+      "profile_views": 4181,
+      "num": 31,
+      "label": "28.07 — 03.08"
     }
   ]
 }
